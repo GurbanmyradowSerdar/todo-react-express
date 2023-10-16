@@ -1,13 +1,12 @@
 import { Button, Grid, TextField, Typography, Card } from "@mui/material";
 import { Stack } from "@mui/system";
-import React, { useEffect, useState } from "react";
-import { signIn, IResponse, signUp, ListItem } from "../service/registration";
-import { addContent, getContent } from "../service/todo";
+import { useEffect, useState } from "react";
+import { addContent, getContent } from "../utils/todo";
+import { ListItem } from "../types";
 
 interface props {
   id: number | string;
   name: string;
-  password: string;
   list?: ListItem[];
 }
 
@@ -44,9 +43,7 @@ const TodoPage = (props: Partial<props>) => {
         <Stack direction={"row"} spacing={2}>
           <Button
             variant="contained"
-            onClick={() =>
-              array ? setArray([...array, { name: title, text: desc }]) : ""
-            }
+            onClick={() => (array ? setArray([...array, { title, desc }]) : "")}
           >
             Add
           </Button>
@@ -70,8 +67,8 @@ const TodoPage = (props: Partial<props>) => {
                       flexWrap="wrap"
                       spacing={2}
                     >
-                      <Typography>Title: {item.name}</Typography>
-                      <Typography>Description : {item.text}</Typography>
+                      <Typography>Title: {item.title}</Typography>
+                      <Typography>Description : {item.desc}</Typography>
                       <Button
                         variant="contained"
                         onClick={() => {
@@ -95,71 +92,4 @@ const TodoPage = (props: Partial<props>) => {
   );
 };
 
-const Registration = () => {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState<Partial<IResponse>>();
-
-  function inn() {
-    signIn(name, password, setUser);
-  }
-
-  function up() {
-    signUp(name, password, setUser);
-  }
-
-  useEffect(() => {}, [user]);
-
-  return user?.name === undefined ? (
-    <Stack
-      sx={{ minHeight: "100vh" }}
-      alignItems="center"
-      justifyContent={"center"}
-    >
-      <Stack
-        alignItems={"center"}
-        spacing={3}
-        m={1}
-        sx={{
-          padding: "40px 20px",
-          borderRadius: "20px",
-        }}
-      >
-        <Typography fontSize={"2rem"}>Registration</Typography>
-        <TextField
-          type={"text"}
-          label="User_name"
-          variant="outlined"
-          inputProps={{ style: { fontSize: "1.3rem" } }}
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <TextField
-          type={"password"}
-          label="Password"
-          variant="outlined"
-          inputProps={{ style: { fontSize: "1.3rem" } }}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Stack direction={"row"} spacing={2}>
-          <Button variant="contained" onClick={inn}>
-            Sign in
-          </Button>
-          <Button variant="contained" onClick={up}>
-            Sign up
-          </Button>
-        </Stack>
-      </Stack>
-    </Stack>
-  ) : (
-    <TodoPage
-      id={user.id}
-      list={user.list}
-      name={user.name}
-      password={user.password}
-    />
-  );
-};
-
-export default Registration;
+export default TodoPage;

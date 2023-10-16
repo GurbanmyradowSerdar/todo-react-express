@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import "./App.css";
-import Registration from "./components/Registration";
+import Registration from "./pages/Registration";
 
 function App() {
   return (
