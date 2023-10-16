@@ -1,4 +1,4 @@
-Its full stack todo application.
+Its full stack todo application, based on Express.js and Vite.js
 
 To activate it, just follow this steps:
 
