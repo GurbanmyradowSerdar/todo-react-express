@@ -37,3 +37,11 @@ export const decryptPassword = (encryptedPassword) => {
   ).toString(CryptoJS.enc.Utf8);
   return decrypted;
 };
+
+// ! checking the credentials
+export function checkCredentials(name, password, clientName, clientPassword) {
+  return (
+    name === clientName &&
+    decryptPassword(password) === decryptPassword(clientPassword)
+  );
+}

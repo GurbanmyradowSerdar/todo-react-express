@@ -1,7 +1,11 @@
 import express from "express";
 import cors from "cors";
-import { decryptPassword, sendResponseHandling } from "./utils.mjs";
-import dotenv from "dotenv";
+import {
+  checkCredentials,
+  decryptPassword,
+  sendResponseHandling,
+} from "./utils.mjs";
+import dotenv, { decrypt } from "dotenv";
 dotenv.config();
 
 const app = express();
@@ -43,7 +47,6 @@ app.post("/add-user", (req, res) => {
     users.push(newUser);
     sendResponseHandling("", res, newUser);
   }
-  console.log(users);
 });
 
 // ! sign in
@@ -52,7 +55,6 @@ app.post("/check-user", (req, res) => {
     sendResponseHandling("User not found", res);
   } else {
     users.forEach((item) => {
-      console.log(`user ${item.password} client ${req.body.password}`);
       if (
         item.name === req.body.name &&
         decryptPassword(item.password) === decryptPassword(req.body.password)
@@ -63,24 +65,77 @@ app.post("/check-user", (req, res) => {
       }
     });
   }
-  console.log(users);
 });
 
 // ! get todos of user via id
-app.get("/get-content/:id", (req, res) => {
-  let id = req.params.id;
-  res.json(users[id]);
+app.post("/get-content", (req, res) => {
+  if (users.length === 0) {
+    sendResponseHandling("there is no any users", res);
+  } else {
+    let userIndex = users.findIndex((user) =>
+      checkCredentials(
+        user.name,
+        user.password,
+        req.body.name,
+        req.body.password
+      )
+    );
+    if (userIndex === -1) {
+      sendResponseHandling("user not found", res);
+    } else {
+      sendResponseHandling("", res, { list: users[userIndex].list });
+    }
+  }
 });
 
 // ! add todo item
-app.post("/add-todo/:id", (req, res) => {
-  let index = req.params.id;
-  let temp = req.body.list;
-  users[index].list.push(...temp);
-  sendResponseHandling("", res, users[index].list);
+app.post("/add-todo", (req, res) => {
+  if (users.length === 0) {
+    sendResponseHandling("there is no any users", res);
+  } else {
+    let userIndex = users.findIndex((user) =>
+      checkCredentials(
+        user.name,
+        user.password,
+        req.body.name,
+        req.body.password
+      )
+    );
+    if (userIndex === -1) {
+      sendResponseHandling("user not found", res);
+    } else {
+      let todo = {
+        title: req.body.title,
+        desc: req.body.desc,
+      };
+      users[userIndex].list.push(todo);
+      sendResponseHandling("", res, todo);
+    }
+  }
 });
 
 // ! delete todo item
+app.post("/delete-todo/:id", (req, res) => {
+  let id = req.params.id;
+  if (users.length === 0) {
+    sendResponseHandling("there is no any users", res);
+  } else {
+    let userIndex = users.findIndex((user) =>
+      checkCredentials(
+        user.name,
+        user.password,
+        req.body.name,
+        req.body.password
+      )
+    );
+    if (userIndex === -1) {
+      sendResponseHandling("user not found", res);
+    } else {
+      users[userIndex].list.splice(id, 1);
+      sendResponseHandling("", res, { list: users[userIndex].list });
+    }
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);

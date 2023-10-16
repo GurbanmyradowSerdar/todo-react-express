@@ -2,6 +2,7 @@
 export interface IUser {
   id: number;
   name: string;
+  password: string;
   list?: ListItem[];
 }
 
@@ -9,7 +10,7 @@ export interface IUser {
 export interface IRegistrationArgs {
   name: string;
   password: string;
-  setUser: React.Dispatch<React.SetStateAction<Partial<IUser> | undefined>>;
+  setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
 }
 
 export interface ICredentials {
@@ -28,6 +29,50 @@ export interface IResponse {
       id: number;
       name: string;
       list?: ListItem[];
+    };
+    error: boolean;
+    errorMessage: string;
+  };
+}
+
+// ! todo page
+export interface ITodoPageProps {
+  id: number | string;
+  name: string;
+  password: string;
+}
+
+export interface ITodoGetContentArgs {
+  name: string;
+  password: string;
+  setArray: React.Dispatch<React.SetStateAction<ListItem[]>>;
+}
+
+export interface IAddTodoArgs extends ITodoGetContentArgs {
+  title: string;
+  desc: string;
+  array: ListItem[];
+}
+
+export interface IRemoveTodoArgs extends ITodoGetContentArgs {
+  id: number;
+}
+
+export interface IAddTodoResponse {
+  data: {
+    body: {
+      title: string;
+      desc: string;
+    };
+    error: boolean;
+    errorMessage: string;
+  };
+}
+
+export interface ITodoResponse {
+  data: {
+    body: {
+      list: ListItem[];
     };
     error: boolean;
     errorMessage: string;

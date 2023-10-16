@@ -4,11 +4,12 @@ import { useState } from "react";
 import { signIn, signUp } from "../utils/registration";
 import TodoPage from "./TodoPage";
 import { IUser } from "../types";
+import { encryptPassword } from "../utils/ciphering";
 
 const Registration = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState<Partial<IUser>>();
+  const [user, setUser] = useState<IUser>();
 
   return user?.name === undefined ? (
     <Stack
@@ -65,7 +66,12 @@ const Registration = () => {
       </Stack>
     </Stack>
   ) : (
-    <TodoPage id={user.id} list={user.list} name={user.name} />
+    <TodoPage
+      id={user.id}
+      list={user.list}
+      name={user.name}
+      password={encryptPassword(password)}
+    />
   );
 };
 

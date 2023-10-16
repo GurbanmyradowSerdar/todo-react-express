@@ -1,22 +1,20 @@
 import { Button, Grid, TextField, Typography, Card } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useEffect, useState } from "react";
-import { addContent, getContent } from "../utils/todo";
-import { ListItem } from "../types";
+import { addTodo, deleteTodo, getContent } from "../utils/todo";
+import { ITodoPageProps, ListItem } from "../types";
 
-interface props {
-  id: number | string;
-  name: string;
-  list?: ListItem[];
-}
-
-const TodoPage = (props: Partial<props>) => {
+const TodoPage = (props: ITodoPageProps) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [array, setArray] = useState<ListItem[]>();
+  const [array, setArray] = useState<ListItem[]>([]);
 
   useEffect(() => {
-    getContent(props.id, setArray);
+    getContent({
+      name: props.name,
+      password: props.password,
+      setArray,
+    });
   }, []);
 
   return (
@@ -43,15 +41,18 @@ const TodoPage = (props: Partial<props>) => {
         <Stack direction={"row"} spacing={2}>
           <Button
             variant="contained"
-            onClick={() => (array ? setArray([...array, { title, desc }]) : "")}
+            onClick={() =>
+              addTodo({
+                array,
+                desc,
+                name: props.name,
+                password: props.password,
+                setArray,
+                title,
+              })
+            }
           >
             Add
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => (array ? addContent(array, props.id) : "")}
-          >
-            Save
           </Button>
         </Stack>
       </Stack>
@@ -71,14 +72,14 @@ const TodoPage = (props: Partial<props>) => {
                       <Typography>Description : {item.desc}</Typography>
                       <Button
                         variant="contained"
-                        onClick={() => {
-                          array
-                            ? setArray([
-                                ...array.slice(0, i),
-                                ...array.slice(i + 1),
-                              ])
-                            : "";
-                        }}
+                        onClick={() =>
+                          deleteTodo({
+                            id: i,
+                            name: props.name,
+                            password: props.password,
+                            setArray,
+                          })
+                        }
                       >
                         Delete
                       </Button>
