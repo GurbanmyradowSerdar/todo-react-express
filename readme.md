@@ -2,7 +2,7 @@ Its full stack todo application.
 
 To activate it, just follow this steps:
 
-1. Open terminal in backend folder, run one of these: yarn or npm i
-2. After that run this command: npm start or yarn start
-3. Open terminal in frontend folder, run one of these: yarn or npm i
-4. After that run this command: npm dev or yarn dev
+1. Open terminal in backend folder, run one of these: **_yarn or npm i_**
+2. After that run this command: **_npm start or yarn start_**
+3. Open terminal in frontend folder, run one of these: **_yarn or npm i_**
+4. After that run this command: **_npm dev or yarn dev_**
