@@ -13,7 +13,15 @@ const Registration = () => {
 
   return user?.name === undefined ? (
     <Stack
-      sx={{ minHeight: "100vh" }}
+      sx={{
+        minHeight: "100vh",
+        fontSize: {
+          xs: "10px",
+          sm: "12px",
+          md: "13px",
+          lg: "15px",
+        },
+      }}
       alignItems="center"
       justifyContent={"center"}
     >
@@ -26,12 +34,12 @@ const Registration = () => {
           borderRadius: "20px",
         }}
       >
-        <Typography fontSize={"2rem"}>Registration</Typography>
+        <Typography fontSize={"2.5em"}>Registration</Typography>
         <TextField
           type={"text"}
           label="User_name"
           variant="outlined"
-          inputProps={{ style: { fontSize: "1.3rem" } }}
+          inputProps={{ style: { fontSize: "1.1em" } }}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
@@ -39,12 +47,13 @@ const Registration = () => {
           type={"password"}
           label="Password"
           variant="outlined"
-          inputProps={{ style: { fontSize: "1.3rem" } }}
+          inputProps={{ style: { fontSize: "1.1em" } }}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <Stack direction={"row"} spacing={2}>
           <Button
+            sx={{ fontSize: "1.2em" }}
             variant="contained"
             onClick={() =>
               signIn({
@@ -57,6 +66,7 @@ const Registration = () => {
             Sign in
           </Button>
           <Button
+            sx={{ fontSize: "1.2em" }}
             variant="contained"
             onClick={() => signUp({ name, password, setUser })}
           >

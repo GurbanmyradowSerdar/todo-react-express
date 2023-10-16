@@ -1,27 +1,32 @@
-import { Button, Grid, TextField, Typography, Card } from "@mui/material";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useEffect, useState } from "react";
-import { addTodo, deleteTodo, getContent } from "../utils/todo";
+import { useState } from "react";
+import { addTodo } from "../utils/todo";
 import { ITodoPageProps, ListItem } from "../types";
+import TodoCard from "../components/TodoCard";
 
 const TodoPage = (props: ITodoPageProps) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
-  const [array, setArray] = useState<ListItem[]>([]);
-
-  useEffect(() => {
-    getContent({
-      name: props.name,
-      password: props.password,
-      setArray,
-    });
-  }, []);
+  const [array, setArray] = useState<ListItem[]>(props.list);
 
   return (
-    <Stack sx={{ minHeight: "100vh" }} alignItems="center" spacing={3}>
+    <Stack
+      sx={{
+        minHeight: "100vh",
+        fontSize: {
+          xs: "10px",
+          sm: "12px",
+          md: "13px",
+          lg: "15px",
+        },
+      }}
+      alignItems="center"
+      gap={3}
+    >
       <Stack alignItems={"center"}>
-        <Typography fontSize={"3.4rem"}>Todo list</Typography>
-        <Typography fontSize={"1.3rem"}>Welcome {props.name}</Typography>
+        <Typography fontSize={"3.4em"}>Todo list</Typography>
+        <Typography fontSize={"1.5em"}>Welcome {props.name}</Typography>
       </Stack>
       <Stack spacing={2} alignItems="center">
         <TextField
@@ -30,6 +35,7 @@ const TodoPage = (props: ITodoPageProps) => {
           variant="outlined"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          inputProps={{ style: { fontSize: "1em" } }}
         />
         <TextField
           type={"text"}
@@ -37,55 +43,39 @@ const TodoPage = (props: ITodoPageProps) => {
           variant="outlined"
           value={desc}
           onChange={(e) => setDesc(e.target.value)}
+          inputProps={{ style: { fontSize: "1em" } }}
         />
-        <Stack direction={"row"} spacing={2}>
-          <Button
-            variant="contained"
-            onClick={() =>
-              addTodo({
-                array,
-                desc,
-                name: props.name,
-                password: props.password,
-                setArray,
-                title,
-              })
-            }
-          >
-            Add
-          </Button>
-        </Stack>
+        <Button
+          variant="contained"
+          onClick={() =>
+            addTodo({
+              array,
+              desc,
+              name: props.name,
+              password: props.password,
+              setArray,
+              title,
+            })
+          }
+          sx={{ fontSize: "1.1em" }}
+        >
+          Add
+        </Button>
       </Stack>
-      <Grid container spacing={1}>
-        {array === undefined
+      <Grid container spacing={2} sx={{ p: "20px" }}>
+        {array.length === 0
           ? null
           : array.map((item, i) => {
               return (
-                <Grid item key={i} xs={12} md={6} lg={4}>
-                  <Card elevation={10} sx={{ padding: "20px 10px" }}>
-                    <Stack
-                      alignItems={"flex-start"}
-                      flexWrap="wrap"
-                      spacing={2}
-                    >
-                      <Typography>Title: {item.title}</Typography>
-                      <Typography>Description : {item.desc}</Typography>
-                      <Button
-                        variant="contained"
-                        onClick={() =>
-                          deleteTodo({
-                            id: i,
-                            name: props.name,
-                            password: props.password,
-                            setArray,
-                          })
-                        }
-                      >
-                        Delete
-                      </Button>
-                    </Stack>
-                  </Card>
-                </Grid>
+                <TodoCard
+                  key={i}
+                  desc={item.desc}
+                  title={item.title}
+                  id={i}
+                  name={props.name}
+                  password={props.password}
+                  setArray={setArray}
+                />
               );
             })}
       </Grid>

@@ -3,7 +3,7 @@ export interface IUser {
   id: number;
   name: string;
   password: string;
-  list?: ListItem[];
+  list: ListItem[];
 }
 
 // ! sign in and sign up
@@ -40,6 +40,7 @@ export interface ITodoPageProps {
   id: number | string;
   name: string;
   password: string;
+  list: ListItem[];
 }
 
 export interface ITodoGetContentArgs {
@@ -77,4 +78,14 @@ export interface ITodoResponse {
     error: boolean;
     errorMessage: string;
   };
+}
+
+// ! todo card copmonent
+export interface ITodoCard {
+  title: string;
+  desc: string;
+  id: number;
+  name: string;
+  password: string;
+  setArray: React.Dispatch<React.SetStateAction<ListItem[]>>;
 }

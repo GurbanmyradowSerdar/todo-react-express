@@ -5,7 +5,7 @@ import {
   decryptPassword,
   sendResponseHandling,
 } from "./utils.mjs";
-import dotenv, { decrypt } from "dotenv";
+import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
