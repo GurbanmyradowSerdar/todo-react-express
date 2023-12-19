@@ -78,7 +78,7 @@ const Registration = () => {
   ) : (
     <TodoPage
       id={user.id}
-      list={user.list}
+      list={user.list || []}
       name={user.name}
       password={encryptPassword(password)}
     />

@@ -2,8 +2,7 @@
 export interface IUser {
   id: number;
   name: string;
-  password: string;
-  list: ListItem[];
+  list?: ListItem[];
 }
 
 // ! sign in and sign up
